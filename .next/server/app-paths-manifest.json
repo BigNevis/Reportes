@@ -1,0 +1,5 @@
+{
+  "/roadmap/page": "app/roadmap/page.js",
+  "/page": "app/page.js",
+  "/epics/page": "app/epics/page.js"
+}
