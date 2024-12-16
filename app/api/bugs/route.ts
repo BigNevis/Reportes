@@ -25,7 +25,7 @@ SELECT
   Estimacion,
   Comentarios_QA
 FROM vw_issues_epics
-WHERE status NOT IN ('Cancelado', 'Cerrado')
+WHERE status NOT IN ('Cancelado')
 ORDER BY prioridad, issue ASC
     `);
     client.release();

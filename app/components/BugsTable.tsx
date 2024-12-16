@@ -83,7 +83,7 @@ const columnOrder: (keyof Bug)[] = [
   "comentarios_qa"
 ]
 
-export default function BugsTable() {
+export function BugsTable() {
   const [bugs, setBugs] = useState<Bug[]>([])
   const [filteredBugs, setFilteredBugs] = useState<Bug[]>([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -93,6 +93,7 @@ export default function BugsTable() {
   const [selectedProject, setSelectedProject] = useState<string>('all')
   const [editingId, setEditingId] = useState<string | null>(null)
   const [filterSearchTerm, setFilterSearchTerm] = useState<string>('')
+  const [activeFilterColumn, setActiveFilterColumn] = useState<keyof Bug | null>(null)
   const tableRef = useRef<HTMLTableElement>(null)
   const router = useRouter()
 
@@ -237,6 +238,16 @@ export default function BugsTable() {
       .sort((a, b) => a.localeCompare(b))
   }
 
+  const handleFilterSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterSearchTerm(e.target.value)
+  }
+
+  const filteredValues = (key: keyof Bug) => {
+    return getUniqueValues(key).filter(value => 
+      value.toLowerCase().includes(filterSearchTerm.toLowerCase())
+    )
+  }
+
   const totalPages = Math.ceil(filteredBugs.length / ITEMS_PER_PAGE)
   const paginatedBugs = filteredBugs.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
@@ -296,18 +307,6 @@ export default function BugsTable() {
     }
   }, [])
 
-  useEffect(() => {
-    const handlePopoverClose = () => {
-      setFilterSearchTerm('')
-    }
-
-    document.addEventListener('pointerdown', handlePopoverClose)
-
-    return () => {
-      document.removeEventListener('pointerdown', handlePopoverClose)
-    }
-  }, [])
-
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-4">
@@ -359,7 +358,14 @@ export default function BugsTable() {
                         </Button>
                         <Popover>
                           <PopoverTrigger asChild>
-                            <Button variant="ghost" className="p-0 h-8 w-8 ml-1">
+                            <Button 
+                              variant="ghost" 
+                              className="p-0 h-8 w-8 ml-1"
+                              onClick={() => {
+                                setActiveFilterColumn(key)
+                                setFilterSearchTerm('')
+                              }}
+                            >
                               <Filter className="h-4 w-4" />
                             </Button>
                           </PopoverTrigger>
@@ -369,23 +375,21 @@ export default function BugsTable() {
                               <Input
                                 placeholder="Buscar..."
                                 value={filterSearchTerm}
-                                onChange={(e) => setFilterSearchTerm(e.target.value)}
+                                onChange={handleFilterSearch}
                                 className="mb-2"
                               />
                               <ScrollArea className="h-[200px]">
                                 <div className="grid gap-2">
-                                  {getUniqueValues(key)
-                                    .filter(value => value.toLowerCase().includes(filterSearchTerm.toLowerCase()))
-                                    .map((value) => (
-                                      <div key={value} className="flex items-center space-x-2">
-                                        <Checkbox
-                                          id={`${key}-${value}`}
-                                          checked={(filterConfig[key] || []).includes(value)}
-                                          onCheckedChange={() => handleFilter(key, value)}
-                                        />
-                                        <Label htmlFor={`${key}-${value}`}>{value}</Label>
-                                      </div>
-                                    ))}
+                                  {filteredValues(key).map((value) => (
+                                    <div key={value} className="flex items-center space-x-2">
+                                      <Checkbox
+                                        id={`${key}-${value}`}
+                                        checked={(filterConfig[key] || []).includes(value)}
+                                        onCheckedChange={() => handleFilter(key, value)}
+                                      />
+                                      <Label htmlFor={`${key}-${value}`}>{value}</Label>
+                                    </div>
+                                  ))}
                                 </div>
                               </ScrollArea>
                             </div>
