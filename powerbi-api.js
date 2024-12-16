@@ -10,12 +10,14 @@ const __dirname = path.dirname(__filename);
 const baseUrl = 'https://bi-reports.appfire.app/aio-app/rest/aio-cn/1.0/powerbi/export/NmJiZDkwZTctN2NiMC00Njk4LTlkMmUtNjVjNDkyMDdk';
 
 const pool = new pg.Pool({
-  user: 'postgres',
-  host: 'localhost',
+  user: 'fevazque',
+  host: 'dpg-cte94u9u0jms7398phm0-a.ohio-postgres.render.com',
   database: 'reportes_local',
-  password: 'admin',
+  password: 'HzR4DefbgZ1c8OVQ7fuc4sX2SN7M34TR',
   port: 5432,
+  ssl: { rejectUnauthorized: false }, // Activa SSL
 });
+
 
 async function fetchOData(url) {
   console.log(`Fetching data from: ${url}`);

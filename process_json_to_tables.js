@@ -1,12 +1,14 @@
 import pg from 'pg';
 
 const pool = new pg.Pool({
-  user: 'postgres',
-  host: 'localhost',
+  user: 'fevazque',
+  host: 'dpg-cte94u9u0jms7398phm0-a.ohio-postgres.render.com',
   database: 'reportes_local',
-  password: 'admin',
+  password: 'HzR4DefbgZ1c8OVQ7fuc4sX2SN7M34TR',
   port: 5432,
+  ssl: { rejectUnauthorized: false } // Habilitar SSL
 });
+
 
 async function deleteTableData(tableName) {
   const client = await pool.connect();
