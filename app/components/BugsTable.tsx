@@ -14,8 +14,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/Input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/Select"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/CheckBox"
+import { Label } from "@/components/ui/Label"
 import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Pencil, Filter } from 'lucide-react'
 import { ScrollArea } from "@/components/ui/scroll-area"
 
